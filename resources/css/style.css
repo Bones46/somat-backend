@@ -1,0 +1,36 @@
+html {
+  overflow-y: auto !important;
+}
+.error--text .v-text-field__details {
+  margin-top: -2px;
+}
+.b-table td , .b-table th {
+  /*padding:14px 24px !important;*/
+  font-size: 13px !important;
+  white-space: nowrap;
+}
+.b-table.tableform , .tableform .b-table  {
+  min-width: 800px !important;
+}
+.b-table.tableform td , .tableform .b-table td  {
+  padding:0px 12px !important;
+}
+.b-table.tableform td:last-child , .tableform .b-table td:last-child  {
+  vertical-align: middle;
+}
+.tableform .b-table .v-input--checkbox .v-label {
+  margin-bottom: 0px;
+}
+.paginate .btn {
+  padding: 0.375rem 0.3rem;
+}
+.paginate input {
+  text-align: center;
+  padding: 0px;
+}
+.pagelimit select {
+  text-align-last: center;
+}
+.v-btn {
+    min-width: 0px !important;
+}

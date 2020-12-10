@@ -1,0 +1,99 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * @property int $school_year_id
+ * @property int $school_id
+ * @property string $name
+ * @property string $start_year
+ * @property string $end_year
+ * @property string $curriculum_name
+ * @property int $created_by
+ * @property string $created_date
+ * @property int $update_by
+ * @property string $update_date
+ * @property School $school
+ * @property LessonTeacher[] $lessonTeachers
+ * @property AcademicCalendar[] $academicCalendars
+ * @property Class[] $classes
+ */
+class schoolyear extends Model
+{
+    /** 
+     *  The constant name of default timestamps field laravel
+     * 
+     *  @var string
+    */
+
+    const CREATED_AT = 'created_date';
+    const UPDATED_AT = 'updated_date';
+    
+    /**
+     * The table associated with the model.
+     * 
+     * @var string
+     */
+    protected $table = 'school_year';
+
+    /**
+     * The primary key for the model.
+     * 
+     * @var string
+     */
+    protected $primaryKey = 'school_year_id';
+
+    /**
+     * @var array
+     */
+<<<<<<< Updated upstream
+    protected $fillable = ['school_id', 'name', 'start_date', 'end_date', 'curriculum_name', 'created_by', 'created_date', 'update_by', 'update_date'];
+=======
+    protected $fillable = ['school_id', 'name', 'start_date', 'end_date', 'curriculum_name', 'created_by', 'created_date', 'updated_by', 'updated_date'];
+>>>>>>> Stashed changes
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function school()
+    {
+        return $this->belongsTo('App\Models\School', 'school_id', 'school_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function lessonTeachers()
+    {
+        return $this->hasMany('App\Models\LessonTeacher', 'school_year_id', 'school_year_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function academicCalendars()
+    {
+        return $this->hasMany('App\Models\AcademicCalendar', 'school_year_id', 'school_year_id');
+    }
+
+     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function studentClass()
+    {
+        return $this->hasMany('App\Models\StudentClass', 'school_year_id', 'school_year_id');
+    }
+
+
+    public static function scopeActiveCurrent($query)
+    {
+        return $query->whereRaw('(now() between start_date and end_date)');
+    }
+
+    public static function scopeActiveFuture($query)
+    {
+        return $query->whereRaw('(now() < start_date)');
+    }
+}

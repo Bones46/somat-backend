@@ -1,0 +1,101 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * @property int $class_major_id
+ * @property int $school_level_id
+ * @property string $name
+ * @property string $description
+ * @property string $active_flag
+ * @property int $created_by
+ * @property string $created_date
+ * @property int $update_by
+ * @property string $update_date
+ * @property SchoolLevel $schoolLevel
+ * @property Lesson[] $lessons
+ * @property Class[] $classes
+ */
+class classmajor extends Model
+{
+    /** 
+     *  The constant name of default timestamps field laravel
+     * 
+     *  @var string
+    */
+
+    const CREATED_AT = 'created_date';
+    const UPDATED_AT = 'updated_date';
+    
+    /**
+     * The table associated with the model.
+     * 
+     * @var string
+     */
+    protected $table = 'class_major';
+
+    /**
+     * The primary key for the model.
+     * 
+     * @var string
+     */
+    protected $primaryKey = 'class_major_id';
+
+    /**
+     * @var array
+     */
+<<<<<<< Updated upstream
+    protected $fillable = ['school_level_id', 'name', 'description', 'active_flag', 'code', 'created_by', 'update_by'];
+=======
+    protected $fillable = ['school_level_id', 'name', 'major_code','description', 'active_flag', 'created_by', 'created_date', 'updated_by', 'updated_date'];
+>>>>>>> Stashed changes
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function schoolLevel()
+    {
+        return $this->belongsTo('App\Models\SchoolLevel', 'school_level_id', 'school_level_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function lessons()
+    {
+        return $this->hasMany('App\Models\Lesson', 'major_id', 'class_major_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function classes()
+    {
+        return $this->hasMany('App\Models\Classes', 'class_major_id', 'class_major_id');
+    }
+
+
+    /**
+     * 
+     * @param type $query
+     * @return type
+     */
+    public static function scopeActive($query)
+    {
+        return $query->where('active_flag', 'Y');
+    }
+
+     /**
+     * get status class major
+     * 
+     * @return string
+     */
+    public function getActiveStatusAttribute()
+    {
+        return $this->attributes['active_flag'] == 'Y' ? 'Active' :'Non-Active';
+    }
+
+    
+}

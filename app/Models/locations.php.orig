@@ -1,0 +1,134 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * @property integer $location_id
+ * @property integer $village_id
+ * @property string $neighbourhood
+ * @property string $hamlet
+ * @property string $address
+ * @property int $created_by
+ * @property string $created_date
+ * @property int $update_by
+ * @property string $update_date
+ * @property Village $village
+ * @property School[] $schools
+ * @property UserProfile[] $userProfiles
+ */
+class locations extends Model
+{
+
+<<<<<<< Updated upstream
+=======
+
+    /**
+     *  The constant name of default timestamps field laravel
+     *
+     *  @var string
+    */
+
+    const CREATED_AT = 'created_date';
+    const UPDATED_AT = 'updated_date';
+
+>>>>>>> Stashed changes
+    /**
+     * The primary key for the model.
+     * 
+     * @var string
+     */
+    protected $primaryKey = 'location_id';
+
+    /**
+<<<<<<< Updated upstream
+=======
+     * @var array
+     */
+    protected $fillable = ['village_id', 'neighbourhood', 'address', 'hamlet', 'created_by', 'updated_by'];
+
+    /**
+>>>>>>> Stashed changes
+     * Create a new Eloquent model instance.
+     *
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        $connection = config('schoolconnect.database.connection') ?: config('database.default');
+
+        $this->setConnection($connection);
+
+        $this->setTable(config('schoolconnect.database.location_table'));
+
+        parent::__construct($attributes);
+    }
+
+    /**
+     * The "type" of the auto-incrementing ID.
+     * 
+     * @var string
+     */
+    protected $keyType = 'integer';
+
+    /**
+     * @var array
+     */
+    protected $fillable = ['village_id', 'neighbourhood', 'hamlet', 'address'];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function village()
+    {
+        return $this->belongsTo('App\Models\Village', 'village_id', 'village_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function schools()
+    {
+        return $this->hasMany('App\\Models\School', 'location_id', 'location_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function userProfiles()
+    {
+        return $this->hasMany('App\Models\UserProfile', 'location_id', 'location_id');
+    }
+    
+    /**
+     * find the exist location or create a new location
+     * 
+     * @param type $query
+     * @param int $villageId
+     * @param String $neigbhourhood
+     * @param String $hamlet
+     * @param String $addrees
+     * @return type
+     */
+    public function scopeFindOrCreate($query, $villageId,$neighbourhood, $hamlet, $address)
+    {
+        $user_id = Auth::User()->user_id;
+        $location = $query->where('village_id', $villageId)
+                         ->where('neighbourhood', $neighbourhood)
+                         ->where('hamlet', $hamlet)
+                         ->where('address', $address)
+                         ->first();
+        if(!$location)
+            $location = static::query()->create(array('village_id'      => $villageId, 
+                                                      'neighbourhood'   => $neighbourhood, 
+                                                      'hamlet'          => $hamlet, 
+                                                      'address'         => $address, 
+                                                      'updated_by'      => $user_id, 
+                                                      'created_by'      => $user_id)
+                   );
+       
+        return $location;
+    }
+}
